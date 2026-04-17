@@ -9,7 +9,7 @@ export async function GET() {
     <title>${esc(siteConfig.name)}</title>
     <link>${siteConfig.url}</link>
     <description>${esc(siteConfig.description)}</description>
-    <language>${siteConfig.language}</language>
+    <language>${siteConfig.language || 'en'}</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteConfig.url}/feed" rel="self" type="application/rss+xml"/>
 ${posts.map(p => `    <item>

@@ -5,7 +5,7 @@ import redirectData from '@/lib/redirects.json'
 const KEEP = new Set<string>(redirectData.keep)
 const REDIRECT = new Set<string>(redirectData.redirect)
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const clean = pathname.endsWith('/') && pathname !== '/'
