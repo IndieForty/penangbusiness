@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getAllCategories } from '@/lib/content'
 import CookieConsent from '@/components/CookieConsent'
 import './globals.css'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: { default: `${siteConfig.name} – ${siteConfig.tagline}`, template: `%s | ${siteConfig.name}` },
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
   other: { 'theme-color': '#ffffff' },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  const gaId = process.env.NEXT_PUBLIC_GA_ID; children }: { children: React.ReactNode }) {
   const categories = getAllCategories().slice(0, 6)
 
   const orgSchema = {
@@ -48,6 +50,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="alternate" type="application/rss+xml" title={siteConfig.name} href="/feed" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }} />
+              {gaId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaId}');
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className="bg-white text-gray-900 antialiased">
         <header className="border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-sm z-50">
